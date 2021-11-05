@@ -23,7 +23,7 @@ def listDistributions(qtoken, baseUrl):
         except:
             pass
 
-        with ThreadPoolExecutor(max_workers=15) as executor:
+        with ThreadPoolExecutor(max_workers=len(responseArray1)) as executor:
             for i in range(0, len(responseArray1)):
                 executor.submit(getDistributions, headers, responseArray1, i)
                
