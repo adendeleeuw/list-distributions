@@ -52,7 +52,7 @@ def main():
     with ThreadPoolExecutor(max_workers=len(surveyIdArray)) as executor:
         for i in range(0, len(surveyIdArray)):
             baseUrl = f"https://au1.qualtrics.com/API/v3/distributions?surveyId={surveyIdArray[i]}&distributionRequestType=Invite"
-            listDistributions(qtoken, baseUrl)
+            executor.submit(listDistributions, qtoken, baseUrl)
     print("---Execution time: %s seconds ---" % (time.time() - start_time))
 
 if __name__== "__main__":
