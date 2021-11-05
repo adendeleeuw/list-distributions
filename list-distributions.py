@@ -4,9 +4,9 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 #--------Main Function to Grab Distribution IDs----------
-def listDistributions(qtoken, baseUrl1):
+def listDistributions(qtoken, baseUrl):
 
-    baseUrl1 = baseUrl1
+    baseUrl = baseUrl
     headers = {
     "x-api-token": qtoken,
     "Content-Type": 'application/json'
@@ -15,11 +15,11 @@ def listDistributions(qtoken, baseUrl1):
 
     while nextPage:
         try:
-            response = requests.get(baseUrl1, headers=headers)
+            response = requests.get(baseUrl, headers=headers)
             responseJson = response.json()
             responseArray1 = responseJson['result']['elements']
             nextPage = responseJson['result']['nextPage']
-            baseUrl1 = nextPage  
+            baseUrl = nextPage  
         except:
             pass
 
@@ -48,9 +48,11 @@ def getDistributions(headers, responseArray1, i):
 def main():
     start_time = time.time()
     qtoken = "" #replace with your own Qualtrics token
-    surveyId = "SV_3BOj1DF1WbnOFAp"
-    baseUrl1 = f"https://au1.qualtrics.com/API/v3/distributions?surveyId={surveyId}&distributionRequestType=Invite"
-    listDistributions(qtoken, baseUrl1)
+    surveyIdArray = ["SV_2ugOyY1cg44HKQZ", "SV_3BOj1DF1WbnOFAp", "SV_aeYYXFbFRUy3UdD", "SV_1GI1pce5v6nzi3r", "SV_2uj83Uppp92Gzch"]
+    with ThreadPoolExecutor(max_workers=len(surveyIdArray)) as executor:
+        for i in range(0, len(surveyIdArray)):
+            baseUrl = f"https://au1.qualtrics.com/API/v3/distributions?surveyId={surveyIdArray[i]}&distributionRequestType=Invite"
+            listDistributions(qtoken, baseUrl)
     print("---Execution time: %s seconds ---" % (time.time() - start_time))
 
 if __name__== "__main__":
