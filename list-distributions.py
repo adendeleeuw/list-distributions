@@ -27,7 +27,7 @@ def listDistributions(qtoken, baseUrl):
             for i in range(0, len(responseArray1)):
                 executor.submit(getDistributions, headers, responseArray1, i)
                
-#-------Function to grab distribution stats---------
+#-------Function to grab individual distribution history---------
 def getDistributions(headers, responseArray1, i):
     nextPage2 = "init"
     id = responseArray1[i]['id']
